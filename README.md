@@ -11,4 +11,4 @@ fileData = ltp.loadTecPlot(<file path>)
 fileData.loadFile()
 ```
 
-You can access to file contents from fileData object.
+You can access file contents from fileData object.
