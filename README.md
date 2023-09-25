@@ -2,7 +2,13 @@
 
 This library aims to provide an easy way to load tecplot formatted file to python program.
 
-Using this library, download and run as follows.
+## Download
+Users can download this library as follows.
+``` zsh
+$ pip3 install git+https://github.com/AstroKen/loadTecPlot
+```
+
+## Usage
 
 ``` Python3
 import loadTecPlot as ltp
