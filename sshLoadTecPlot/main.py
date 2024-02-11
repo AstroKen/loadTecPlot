@@ -1,18 +1,35 @@
 import numpy as np
 import pandas as pd
 import re
+import paramiko
 
-class loadTecPlot:
-    def __init__(self, filename):
-        self.file = filename
+class sshLoadTecPlot:
+    def __init__(self, hostname, username, key_filename, data_filename):
+        self.client = paramiko.SSHClient()
+        self.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        self.client.connect(
+                hostname=hostname,
+                username=username,
+                key_filename=key_filename
+                )
+        self.sftp = self.client.open_sftp()
+
+        self.file = data_filename
         self.noI = np.empty((0), dtype="int")
         self.noJ = np.empty((0), dtype="int")
         self.zones = np.empty((0), dtype="object")
 
+    def checkFile(self):
+        try:
+            with self.sftp.open(self.file, 'r') as f:
+                return True
+        except FileNotFoundError:
+            return False
+
     def loadFile(self):
         ndata = 0
-        with open(self.file, 'r') as f:
-            data = f.read().splitlines()
+        with self.sftp.open(self.file, 'r') as f:
+            data = f.read().decode().splitlines()
         nTitle = [i for i, s in enumerate(data) if "TITLE" in s]
         nVariable = [i for i, s in enumerate(data) if "VARIABLE" in s]
         nZone = [i for i, s in enumerate(data) if "ZONE" in s]
@@ -45,3 +62,6 @@ class loadTecPlot:
             indicies[size[i]:size[i + 1]] = self.zones[i]
 
         self.data = pd.DataFrame(datas, columns=vars, index=indicies)
+
+    def close(self):
+        self.client.close()
