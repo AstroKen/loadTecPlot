@@ -14,7 +14,7 @@ class loadTecPlot:
         with open(self.file, 'r') as f:
             data = f.read().splitlines()
         nTitle = [i for i, s in enumerate(data) if "TITLE" in s]
-        nVariable = [i for i, s in enumerate(data) if "VARIABLES" in s]
+        nVariable = [i for i, s in enumerate(data) if "VARIABLE" in s]
         nZone = [i for i, s in enumerate(data) if "ZONE" in s]
 
         ###    load TITLE    ###
