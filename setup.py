@@ -8,8 +8,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "numpy",
-        "pandas",
-        "paramiko"
+        "pandas"
         ],
     include_package_data=True,
 )
